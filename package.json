@@ -13,8 +13,8 @@
     "start": "node dist/index.js",
     "start:dev": "node --inspect dist/index.js",
     "start:break": "node --inspect-brk dist/index.js",
-    "build": "yarn tsc -p src/tsconfig.json",
-    "build-watch": "yarn tsc -p src/tsconfig.json --watch",
+    "build": "yarn tsc",
+    "build-watch": "yarn tsc --watch",
     "unit": "jest",
     "test": "yarn unit",
     "release": "standard-version",
@@ -28,6 +28,7 @@
     "minimist": "^1.2.0",
     "node-emberplus": "https://github.com/olzzon/node-emberplus.git#feat/timeout-hack",
     "redux": "^4.0.5",
+    "socketio": "^1.0.0",
     "typescript": "^3.8.2",
     "winston": "^3.2.1",
     "winston-elasticsearch": "^0.8.4"
