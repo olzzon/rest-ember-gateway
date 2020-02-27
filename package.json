@@ -1,0 +1,39 @@
+{
+  "name": "tv2-rest-socket-ember-provider",
+  "version": "0.0.0",
+  "description": "",
+  "license": "MIT",
+  "private": false,
+  "author": {
+    "name": "Kasper Olsson Hans (TV2 Denmark)",
+    "email": "github@olzzon.dk"
+  },
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "start:dev": "node --inspect dist/index.js",
+    "start:break": "node --inspect-brk dist/index.js",
+    "build": "yarn tsc -p src/tsconfig.json",
+    "build-watch": "yarn tsc -p src/tsconfig.json --watch",
+    "unit": "jest",
+    "test": "yarn unit",
+    "release": "standard-version",
+    "prepareChangelog": "standard-version --prerelease",
+    "watch": "jest --watch",
+    "validate:dependencies": "yarn audit && yarn license-validate",
+    "license-validate": "node-license-validator -p -d --allow-licenses MIT MIT/X11 BSD BSD-3-Clause BSD-2-Clause ISC Apache Apache-2.0 WTFPL CC-BY-3.0 CC0-1.0 Unlicense --allow-packages cycle"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "minimist": "^1.2.0",
+    "node-emberplus": "https://github.com/olzzon/node-emberplus.git#feat/timeout-hack",
+    "redux": "^4.0.5",
+    "typescript": "^3.8.2",
+    "winston": "^3.2.1",
+    "winston-elasticsearch": "^0.8.4"
+  },
+  "devDependencies": {
+    "@types/node": "^13.7.6",
+    "standard-version": "^7.1.0"
+  }
+}
