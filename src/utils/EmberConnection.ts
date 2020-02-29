@@ -44,11 +44,10 @@ export class EmberMixerConnection {
             return this.emberConnection.getDirectory();
         })
         .then((r: any) => {
-            console.log("Directory :", r);
-            this.deviceRoot = r;
             this.emberConnection.expand(r.elements[0])
             .then(() => {
-                this.dumpEmberTree(this.emberConnection)
+                this.deviceRoot = this.emberConnection.root;
+                this.dumpEmberTree(this.deviceRoot)
                 this.setupMixerConnection();
             })
         })
@@ -57,8 +56,8 @@ export class EmberMixerConnection {
         });
     }
 
-    dumpEmberTree(connection: any) {
-        let json = JSON.stringify(connection.root)
+    dumpEmberTree(root: any) {
+        let json = JSON.stringify(root)
         if (!fs.existsSync('storage')){
             fs.mkdirSync('storage')
         }
