@@ -68,9 +68,24 @@ export class EmberMixerConnection {
     }
 
     convertRootToObject(root: any): any {
-        this.deviceRoot = JSON.parse(JSON.stringify(root))
-        console.log('DeviceRoot object :', this.deviceRoot)
+        let rootObj = JSON.parse(JSON.stringify(root))
+        console.log('DeviceRoot raw :', rootObj)
+        this.deviceRoot = this.convertChildToObject(rootObj.elements[0])
+        console.log('Device Object :', this.deviceRoot)
         logger.info('Tree converted to object')
+    }
+
+    convertChildToObject(node: any): any {
+        if (node.children) {
+            let childNode: any = {}
+            node.children.forEach((item: any) => {
+                let temp = this.convertChildToObject(item)
+                childNode[item.identifier] = temp
+            })
+            return childNode
+        } else {
+            return node
+        }
     }
 
     setupMixerConnection() {
