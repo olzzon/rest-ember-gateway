@@ -37,7 +37,6 @@ export class EmberMixerConnection {
             logger.error('Lost Ember connection')
 		})
         logger.info('Connecting to Ember')
-        let deviceRoot: any;
         this.emberConnection.connect()
         .then(() => {
             console.log("Getting Directory")
@@ -46,8 +45,8 @@ export class EmberMixerConnection {
         .then((r: any) => {
             this.emberConnection.expand(r.elements[0])
             .then(() => {
-                this.deviceRoot = this.emberConnection.root;
-                this.dumpEmberTree(this.deviceRoot)
+                this.dumpEmberTree(this.emberConnection.root)
+                this.convertRootToObject(this.emberConnection.root)
                 this.setupMixerConnection();
             })
         })
@@ -66,6 +65,12 @@ export class EmberMixerConnection {
             console.log(error)
             logger.error('Error writing Ember-dump file')
         })
+    }
+
+    convertRootToObject(root: any): any {
+        this.deviceRoot = JSON.parse(JSON.stringify(root))
+        console.log('DeviceRoot object :', this.deviceRoot)
+        logger.info('Tree converted to object')
     }
 
     setupMixerConnection() {
