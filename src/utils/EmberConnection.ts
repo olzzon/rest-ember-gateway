@@ -2,6 +2,8 @@
 import { EmberClient } from 'node-emberplus'
 import { logger } from './logger'
 const processArgs = require('minimist')(process.argv.slice(2))
+const fs = require('fs')
+const path = require('path')
 
 const emberIp = process.env.emberIp || processArgs.emberIp || "0.0.0.0"
 const emberPort = process.env.emberPort || processArgs.emberPort || "9000"
@@ -46,12 +48,25 @@ export class EmberMixerConnection {
             this.deviceRoot = r;
             this.emberConnection.expand(r.elements[0])
             .then(() => {
+                this.dumpEmberTree(this.emberConnection)
                 this.setupMixerConnection();
             })
         })
         .catch((e: any) => {
             console.log(e.stack);
         });
+    }
+
+    dumpEmberTree(connection: any) {
+        let json = JSON.stringify(connection.root)
+        if (!fs.existsSync('storage')){
+            fs.mkdirSync('storage')
+        }
+        logger.info('Writing EmberTree to file')
+        fs.writeFile(path.resolve('storage', 'embertree.json'), json, 'utf8', (error: any)=>{
+            console.log(error)
+            logger.error('Error writing Ember-dump file')
+        })
     }
 
     setupMixerConnection() {
