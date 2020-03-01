@@ -12,9 +12,9 @@ server.listen(80);
 server.on('connection', () => {
     app.get('/', (req: any, res: any) => {
       console.log(req.params)
-      res.send('Access REST api by calling /rest')
+      res.send('Access REST api by calling /state, queries: ?full  and ?path=the/tree/of/our/ember')
     })
-    .get('/rest', (req: any, res: any) => {
+    .get('/state', (req: any, res: any) => {
       console.log('Query : ', req.query)
       if (typeof(req.query.full)!=='undefined') {
         res.json(global.emberStore)
