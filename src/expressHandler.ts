@@ -11,9 +11,16 @@ server.listen(80);
 
 server.on('connection', () => {
     app.get('/', (req: any, res: any) => {
-      console.log(req)
-      res.json(global.emberStore)
+      console.log(req.params)
+      res.send('Access REST api by calling /rest')
     })
+    .get('/rest', (req: any, res: any) => {
+      console.log('Query : ', req.query)
+      if (req.query.full==='true') {
+        res.json(global.emberStore)
+      }
+    })
+
   })
   
 socketServer.on('connection', ((socket: any) => {
