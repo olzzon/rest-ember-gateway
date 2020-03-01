@@ -7,11 +7,12 @@ const server = require('http').Server(app);
 const socketServer = require('socket.io')(server);
 
 app.use( '/' , express.static(path.join(__dirname ,'..')))
-server.listen(1176);
+server.listen(80);
 
 server.on('connection', () => {
     app.get('/', (req: any, res: any) => {
-      res.sendFile(path.resolve('dist/index.html'))
+      console.log(req)
+      res.json(global.emberStore)
     })
   })
   

@@ -5,6 +5,7 @@ declare global {
   namespace NodeJS {
       interface Global {
           mainThreadHandler: MainThreadHandlers
+          emberStore: any
           navigator: any // Workaround for WebMidi
           performance: any // Workaround for WebMidi
       }

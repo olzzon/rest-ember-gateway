@@ -5,18 +5,20 @@ const processArgs = require('minimist')(process.argv.slice(2))
 const fs = require('fs')
 const path = require('path')
 
+const {
+    quicktype,
+    InputData,
+    jsonInputForTargetLanguage,
+    JSONSchemaInput,
+    JSONSchemaStore 
+  } = require("quicktype-core");
 const emberIp = process.env.emberIp || processArgs.emberIp || "0.0.0.0"
 const emberPort = process.env.emberPort || processArgs.emberPort || "9000"
 
 export class EmberMixerConnection {
     emberConnection: EmberClient
-    deviceRoot: any;
-    emberNodeObject: Array<any>;
-
 
     constructor() {
-        this.emberNodeObject = new Array(200);
-        
         logger.info("Setting up Ember connection")
         this.emberConnection = new EmberClient(
             emberIp,
@@ -69,9 +71,8 @@ export class EmberMixerConnection {
 
     convertRootToObject(root: any): any {
         let rootObj = JSON.parse(JSON.stringify(root))
-        console.log('DeviceRoot raw :', rootObj)
-        this.deviceRoot = this.convertChildToObject(rootObj.elements[0])
-        console.log('Device Object :', this.deviceRoot)
+        global.emberStore = this.convertChildToObject(rootObj.elements[0])
+        console.log('Device Object :', global.emberStore)
         logger.info('Tree converted to object')
     }
 
