@@ -84,37 +84,38 @@ export class EmberMixerConnection {
         }
     }
 
-    updatePath(path: string): Promise<any> {
-        return new Promise((resolve, reject) => {
-            this.emberConnection.getElementByPath(path)
-            .then(()=> {
-                resolve()
-                return
-            })
-            .catch((error: Error) => {
-                logger.error('Error updating path')
-            })
-        })
+    async setValue(path: string, value: any): Promise<any> {
+        const element = await this.emberConnection.getElementByPath(path)
+        await this.emberConnection.setValue(element, value)
+        await this.updatePath(path)
+        return true
     }
 
+    async updatePath(path: string): Promise<any> {
+        const element = await this.emberConnection.getElementByPath(path)
+        let pathArray = path.split('/')
+        this.updateObjectFromArray(global.emberStore, element, pathArray, 0)
+        return true
+    }
 
-    resolveObjectFromArray = (sourceObject: any, referenceArray: [string], index: number): any => {
+    updateObjectFromArray = (sourceObject: any, updatedElement: any, referenceArray: string[], index: number) => {
         let child = sourceObject[referenceArray[index]]
         if (index < referenceArray.length - 1) {
-            return this.resolveObjectFromArray(child, referenceArray, index + 1)
+           this.updateObjectFromArray(child, updatedElement, referenceArray, index + 1)
+        } else {
+            sourceObject[referenceArray[index]] = updatedElement
+        }
+    }
+
+    getObjectFromArray = (sourceObject: any, referenceArray: string[], index: number): any => {
+        let child = sourceObject[referenceArray[index]]
+        if (index < referenceArray.length - 1) {
+            return this.getObjectFromArray(child, referenceArray, index + 1)
         } else {
             return child
         }
     }
   
-
-    setValue(path: string, value: any) {
-        this.emberConnection.getElementByPath(path)
-        .then((element: any) => {
-            this.emberConnection.setValueNoAck(element, value);
-        })
-    }
-
     setupMixerConnection() {
         logger.info('Ember connection established - setting up subscription of channels')
     }
