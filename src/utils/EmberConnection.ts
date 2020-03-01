@@ -1,6 +1,7 @@
 //@ts-ignore
 import { EmberClient } from 'node-emberplus'
 import { logger } from './logger'
+import { resolve } from 'dns'
 const processArgs = require('minimist')(process.argv.slice(2))
 const fs = require('fs')
 const path = require('path')
@@ -64,7 +65,8 @@ export class EmberMixerConnection {
 
     convertRootToObject(root: any): any {
         let rootObj = JSON.parse(JSON.stringify(root))
-        global.emberStore = this.convertChildToObject(rootObj.elements[0])
+        global.emberStore={}
+        global.emberStore[rootObj.elements[0].identifier] = this.convertChildToObject(rootObj.elements[0])
         console.log('Device Object :', global.emberStore)
         logger.info('Tree converted to object')
     }
@@ -81,6 +83,30 @@ export class EmberMixerConnection {
             return node
         }
     }
+
+    updatePath(path: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.emberConnection.getElementByPath(path)
+            .then(()=> {
+                resolve()
+                return
+            })
+            .catch((error: Error) => {
+                logger.error('Error updating path')
+            })
+        })
+    }
+
+
+    resolveObjectFromArray = (sourceObject: any, referenceArray: [string], index: number): any => {
+        let child = sourceObject[referenceArray[index]]
+        if (index < referenceArray.length - 1) {
+            return this.resolveObjectFromArray(child, referenceArray, index + 1)
+        } else {
+            return child
+        }
+    }
+  
 
     setValue(path: string, value: any) {
         this.emberConnection.getElementByPath(path)

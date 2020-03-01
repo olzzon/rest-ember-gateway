@@ -20,9 +20,12 @@ server.on('connection', () => {
       if (typeof(req.query.full)!=='undefined') {
         res.json(global.emberStore)
       } else if (typeof(req.query.path) !== 'undefined') {
-        let pathArray = req.query.path.split('/')
-        let test = resolveObjectFromArray(global.emberStore, pathArray, 0)
-        res.json(test)
+        global.mainThreadHandler.emberConnection.updatePath(req.query.path)
+        .then(()=>{
+          let pathArray = req.query.path.split('/')
+          let test = global.mainThreadHandler.emberConnection.resolveObjectFromArray(global.emberStore, pathArray, 0)
+          res.json(test)
+        })
       }
     })
     .post('/setvalue', (req: any, res: any) => {
@@ -39,15 +42,6 @@ socketServer.on('connection', ((socket: any) => {
       // global.mainThreadHandler.socketServerHandlers(socket)
     })
 )
-
-const resolveObjectFromArray = (sourceObject: any, referenceArray: [string], index: number): any => {
-  let child = sourceObject[referenceArray[index]]
-  if (index < referenceArray.length - 1) {
-    return resolveObjectFromArray(child, referenceArray, index + 1)
-  } else {
-    return child
-  }
-}
 
 export const expressInit = () => {
     logger.info('Initialising WebServer')
