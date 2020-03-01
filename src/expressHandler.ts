@@ -1,4 +1,5 @@
 import { logger } from './utils/logger'
+import { MainThreadHandlers } from 'MainThreadHandler';
 
 const express = require('express')
 const path = require('path')
@@ -22,6 +23,13 @@ server.on('connection', () => {
         let pathArray = req.query.path.split('/')
         let test = resolveObjectFromArray(global.emberStore, pathArray, 0)
         res.json(test)
+      }
+    })
+    .post('/setvalue', (req: any, res: any) => {
+      console.log('Query : ', req.query)
+      if (typeof(req.query.path) !== 'undefined') {
+        global.mainThreadHandler.emberConnection.setValue(req.query.path, req.query.value)        
+        res.json('Value changed')
       }
     })
   })

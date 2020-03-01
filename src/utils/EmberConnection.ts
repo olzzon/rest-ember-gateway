@@ -82,6 +82,13 @@ export class EmberMixerConnection {
         }
     }
 
+    setValue(path: string, value: any) {
+        this.emberConnection.getElementByPath(path)
+        .then((element: any) => {
+            this.emberConnection.setValueNoAck(element, value);
+        })
+    }
+
     setupMixerConnection() {
         logger.info('Ember connection established - setting up subscription of channels')
     }
