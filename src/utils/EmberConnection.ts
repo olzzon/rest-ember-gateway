@@ -5,13 +5,6 @@ const processArgs = require('minimist')(process.argv.slice(2))
 const fs = require('fs')
 const path = require('path')
 
-const {
-    quicktype,
-    InputData,
-    jsonInputForTargetLanguage,
-    JSONSchemaInput,
-    JSONSchemaStore 
-  } = require("quicktype-core");
 const emberIp = process.env.emberIp || processArgs.emberIp || "0.0.0.0"
 const emberPort = process.env.emberPort || processArgs.emberPort || "9000"
 

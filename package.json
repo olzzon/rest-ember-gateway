@@ -27,7 +27,6 @@
     "express": "^4.17.1",
     "minimist": "^1.2.0",
     "node-emberplus": "https://github.com/olzzon/node-emberplus.git#feat/timeout-hack",
-    "quicktype-core": "^6.0.52",
     "redux": "^4.0.5",
     "socket.io": "^2.3.0",
     "typescript": "^3.8.2",
