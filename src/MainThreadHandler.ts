@@ -1,20 +1,22 @@
-import { store, state } from './reducers/store'
 import { socketServer } from './expressHandler'
-import { EmberMixerConnection } from './utils/EmberConnection'
-
-import { 
-    loadState, 
-} from './utils/SettingsStorage'
+import { EmberClientConnection } from './utils/EmberClientConnection'
+import { EmberServerConnection } from './utils/EmberServerConnection'
+const processArgs = require('minimist')(process.argv.slice(2))
 
 import { logger } from './utils/logger';
-const path = require('path')
 
 export class MainThreadHandlers {
-    emberConnection: EmberMixerConnection
-    
+    emberConnection: EmberClientConnection | EmberServerConnection
+
     constructor() {
         logger.info('Setting up MainThreadHandlers', {})
-        this.emberConnection = new EmberMixerConnection()
+        // If an IP adress is parsed it starts as a Client
+        // If not it starts as Server
+        if (process.env.emberIp || processArgs.emberIp) {
+            this.emberConnection = new EmberClientConnection()
+        } else {
+            this.emberConnection = new EmberServerConnection()
+        }
         /*
         store.dispatch({
             type:UPDATE_SETTINGS,

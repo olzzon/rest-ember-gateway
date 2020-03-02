@@ -1,5 +1,4 @@
 import { logger } from './utils/logger'
-import { MainThreadHandlers } from 'MainThreadHandler';
 
 const express = require('express')
 const path = require('path')

@@ -1,7 +1,8 @@
 //@ts-ignore
-import { EmberClient } from 'node-emberplus'
+import { EmberServer } from 'node-emberplus'
+const {ParameterType, FunctionArgument} = require("node-emberplus").EmberLib
+
 import { logger } from './logger'
-import { resolve } from 'dns'
 const processArgs = require('minimist')(process.argv.slice(2))
 const fs = require('fs')
 const path = require('path')
@@ -9,14 +10,16 @@ const path = require('path')
 const emberIp = process.env.emberIp || processArgs.emberIp || "0.0.0.0"
 const emberPort = process.env.emberPort || processArgs.emberPort || "9000"
 
-export class EmberMixerConnection {
-    emberConnection: EmberClient
+export class EmberServerConnection {
+    emberConnection: EmberServer
 
     constructor() {
         logger.info("Setting up Ember connection")
-        this.emberConnection = new EmberClient(
+        let root = this.createEmberTree()
+        this.emberConnection = new EmberServer(
             emberIp,
-            emberPort
+            emberPort,
+            root
         );
 
         this.emberConnection.on('error', (error: any) => {
@@ -32,35 +35,32 @@ export class EmberMixerConnection {
         this.emberConnection.on('disconnected', () => {
             logger.error('Lost Ember connection')
 		})
-        logger.info('Connecting to Ember')
-        this.emberConnection.connect()
-        .then(() => {
-            console.log("Getting Directory")
-            return this.emberConnection.getDirectory();
+        logger.info('Setting up Ember Server')
+        this.convertRootToObject(this.emberConnection.tree)
+
+        this.emberConnection.listen()
+        .then(() => { 
+            console.log("listening"); 
         })
-        .then((r: any) => {
-            this.emberConnection.expand(r.elements[0])
-            .then(() => {
-                this.dumpEmberTree(this.emberConnection.root)
-                this.convertRootToObject(this.emberConnection.root)
-                this.setupMixerConnection();
-            })
-        })
-        .catch((e: any) => {
-            console.log(e.stack);
+        .catch((error: Error) => { 
+            console.log(error.stack); 
         });
     }
 
-    dumpEmberTree(root: any) {
-        let json = JSON.stringify(root)
-        if (!fs.existsSync('storage')){
+    createEmberTree() {
+        if (!fs.existsSync('storage/embertree.json')){
             fs.mkdirSync('storage')
+            logger.error('Missing embertree.json file in storage folder')
         }
-        logger.info('Writing EmberTree to file')
-        fs.writeFile(path.resolve('storage', 'embertree.json'), json, 'utf8', (error: any)=>{
-            console.log(error)
-            logger.error('Error writing Ember-dump file')
-        })
+        logger.info('Reading EmberTree form file')
+        let treeJson = JSON.parse(fs.readFileSync(path.resolve('storage', 'embertree.json'), (error: Error)=>{
+            if (error) {
+                console.log(error)
+                logger.error('Error reading Ember file')
+            }
+        }))
+        console.log('Ember Tree :', treeJson)
+        return EmberServer.JSONtoTree(treeJson)
     }
 
     convertRootToObject(root: any): any {
@@ -114,10 +114,6 @@ export class EmberMixerConnection {
         } else {
             return child
         }
-    }
-  
-    setupMixerConnection() {
-        logger.info('Ember connection established - setting up subscription of channels')
     }
 }
 
