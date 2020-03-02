@@ -7,22 +7,25 @@ const processArgs = require('minimist')(process.argv.slice(2))
 const fs = require('fs')
 const path = require('path')
 
-const emberIp = process.env.emberIp || processArgs.emberIp || "0.0.0.0"
 const emberPort = process.env.emberPort || processArgs.emberPort || "9000"
 
 export class EmberServerConnection {
     emberConnection: EmberServer
 
     constructor() {
-        logger.info("Setting up Ember connection")
+        logger.info("Setting up Ember Server")
         let root = this.createEmberTree()
         this.emberConnection = new EmberServer(
-            emberIp,
+            '0.0.0.0',
             emberPort,
             root
         );
 
-        this.emberConnection.on('error', (error: any) => {
+        this.emberConnection
+        .on('event', (event: any) => {
+            console.log('Event received : ', event)
+        })
+        .on('error', (error: any) => {
 			if (
 				(error.message + '').match(/econnrefused/i) ||
 				(error.message + '').match(/disconnected/i)
@@ -32,7 +35,7 @@ export class EmberServerConnection {
 				logger.error('Ember connection unknown error' + error.message)
 			}
         })
-        this.emberConnection.on('disconnected', () => {
+        .on('disconnected', () => {
             logger.error('Lost Ember connection')
 		})
         logger.info('Setting up Ember Server')
@@ -85,10 +88,10 @@ export class EmberServerConnection {
     }
 
     async setValue(path: string, value: any): Promise<any> {
-        const element = await this.emberConnection.getElementByPath(path)
-        await this.emberConnection.setValue(element, value)
-        await this.updatePath(path)
-        return true
+        //const element = await this.emberConnection.getElementByPath(path)
+        //await this.emberConnection.setValue(element, value)
+        //await this.updatePath(path)
+        //return true
     }
 
     async updatePath(path: string): Promise<any> {

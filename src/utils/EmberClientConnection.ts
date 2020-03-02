@@ -12,7 +12,7 @@ export class EmberClientConnection {
     emberConnection: EmberClient
 
     constructor() {
-        logger.info("Setting up Ember connection")
+        logger.info("Setting up Ember Client Connection")
         this.emberConnection = new EmberClient(
             emberIp,
             emberPort
