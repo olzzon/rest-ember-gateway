@@ -8,6 +8,7 @@ const fs = require('fs')
 const path = require('path')
 
 const emberPort = process.env.emberPort || processArgs.emberPort || "9000"
+const emberFile = process.env.emberFile || processArgs.emberFile || "embertree.json"
 
 export class EmberServerConnection {
     emberConnection: EmberServer
@@ -51,12 +52,12 @@ export class EmberServerConnection {
     }
 
     createEmberTree() {
-        if (!fs.existsSync('storage/embertree.json')){
+        if (!fs.existsSync(path.resolve('storage', emberFile))){
             fs.mkdirSync('storage')
             logger.error('Missing embertree.json file in storage folder')
         }
         logger.info('Reading EmberTree form file')
-        let treeJson = JSON.parse(fs.readFileSync(path.resolve('storage', 'embertree.json'), (error: Error)=>{
+        let treeJson = JSON.parse(fs.readFileSync(path.resolve('storage', emberFile), (error: Error)=>{
             if (error) {
                 console.log(error)
                 logger.error('Error reading Ember file')
