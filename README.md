@@ -1,4 +1,4 @@
-# tv2-rest-based-ember-provider
+# REST-EMBER GATEWAY
 Node based Emberprovider with REST API
 
 ### Run:
