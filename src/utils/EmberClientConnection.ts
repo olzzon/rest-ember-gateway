@@ -56,7 +56,7 @@ export class EmberClientConnection {
             fs.mkdirSync('storage')
         }
         logger.info('Writing EmberTree to file')
-        fs.writeFile(path.resolve('storage', 'embertree.json'), json, 'utf8', (error: Error)=>{
+        fs.writeFile(path.resolve('storage', 'clientembertree.json'), json, 'utf8', (error: Error)=>{
             if(error) {
                 console.log(error)
                 logger.error('Error writing Ember-dump file')

@@ -19,10 +19,10 @@ server.on('connection', () => {
       if (typeof(req.query.full)!=='undefined') {
         res.json(global.emberStore)
       } else if (typeof(req.query.path) !== 'undefined') {
-        global.mainThreadHandler.emberConnection.updatePath(req.query.path)
+        global.mainThreadHandler.emberClientConnection.updatePath(req.query.path)
         .then(()=>{
           let pathArray = req.query.path.split('/')
-          let test = global.mainThreadHandler.emberConnection.getObjectFromArray(global.emberStore, pathArray, 0)
+          let test = global.mainThreadHandler.emberClientConnection.getObjectFromArray(global.emberStore, pathArray, 0)
           res.json(test)
         })
       }
@@ -30,7 +30,7 @@ server.on('connection', () => {
     .post('/setvalue', (req: any, res: any) => {
       console.log('Query : ', req.query)
       if (typeof(req.query.path) !== 'undefined') {
-        global.mainThreadHandler.emberConnection.setValue(req.query.path, req.query.value)
+        global.mainThreadHandler.emberClientConnection.setValue(req.query.path, req.query.value)
         res.send('Value Changed')
     }
     })

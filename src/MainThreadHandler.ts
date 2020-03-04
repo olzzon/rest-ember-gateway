@@ -6,17 +6,17 @@ const processArgs = require('minimist')(process.argv.slice(2))
 import { logger } from './utils/logger';
 
 export class MainThreadHandlers {
-    emberConnection: EmberClientConnection | EmberServerConnection
+    emberClientConnection: EmberClientConnection 
+    emberServerConnection: EmberServerConnection
 
     constructor() {
         logger.info('Setting up MainThreadHandlers', {})
-        // If an IP adress is parsed it starts as a Client
-        // If not it starts as Server
-        if (process.env.emberIp || processArgs.emberIp) {
-            this.emberConnection = new EmberClientConnection()
-        } else {
-            this.emberConnection = new EmberServerConnection()
+        // Start Ember Server
+        if (!process.env.emberIp && !processArgs.emberIp) {
+            this.emberServerConnection = new EmberServerConnection()
         }
+        // If an IP adress is parsed it starts as a Client
+        this.emberClientConnection = new EmberClientConnection()
         /*
         store.dispatch({
             type:UPDATE_SETTINGS,
