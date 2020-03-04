@@ -53,8 +53,7 @@ export class EmberServerConnection {
 
     createEmberTree() {
         if (!fs.existsSync(path.resolve('storage', emberFile))){
-            fs.mkdirSync('storage')
-            logger.error('Missing embertree.json file in storage folder')
+            logger.error('Missing ' + emberFile + ' file in storage folder')
         }
         logger.info('Reading EmberTree form file')
         let treeJson = JSON.parse(fs.readFileSync(path.resolve('storage', emberFile), (error: Error)=>{
