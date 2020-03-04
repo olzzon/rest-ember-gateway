@@ -66,9 +66,9 @@ export class EmberClientConnection {
 
     convertRootToObject(root: any): any {
         let rootObj = JSON.parse(JSON.stringify(root))
-        global.emberStore={}
-        global.emberStore[rootObj.elements[0].identifier] = this.convertChildToObject(rootObj.elements[0])
-        console.log('Device Object :', global.emberStore)
+        global.emberClientStore={}
+        global.emberClientStore[rootObj.elements[0].identifier] = this.convertChildToObject(rootObj.elements[0])
+        console.log('Device Object :', global.emberClientStore)
         logger.info('Tree converted to object')
     }
 
@@ -95,7 +95,7 @@ export class EmberClientConnection {
     async updatePath(path: string): Promise<any> {
         const element = await this.emberConnection.getElementByPath(path)
         let pathArray = path.split('/')
-        this.updateObjectFromArray(global.emberStore, element, pathArray, 0)
+        this.updateObjectFromArray(global.emberClientStore, element, pathArray, 0)
         return true
     }
 

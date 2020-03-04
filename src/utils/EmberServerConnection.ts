@@ -69,9 +69,9 @@ export class EmberServerConnection {
 
     convertRootToObject(root: any): any {
         let rootObj = JSON.parse(JSON.stringify(root))
-        global.emberStore={}
-        global.emberStore[rootObj.elements[0].identifier] = this.convertChildToObject(rootObj.elements[0])
-        console.log('Device Object :', global.emberStore)
+        global.emberServerStore={}
+        global.emberServerStore[rootObj.elements[0].identifier] = this.convertChildToObject(rootObj.elements[0])
+        console.log('Device Object :', global.emberServerStore)
         logger.info('Tree converted to object')
     }
 
@@ -88,36 +88,5 @@ export class EmberServerConnection {
         }
     }
 
-    async setValue(path: string, value: any): Promise<any> {
-        //const element = await this.emberConnection.getElementByPath(path)
-        //await this.emberConnection.setValue(element, value)
-        //await this.updatePath(path)
-        //return true
-    }
-
-    async updatePath(path: string): Promise<any> {
-        const element = await this.emberConnection.getElementByPath(path)
-        let pathArray = path.split('/')
-        this.updateObjectFromArray(global.emberStore, element, pathArray, 0)
-        return true
-    }
-
-    updateObjectFromArray = (sourceObject: any, updatedElement: any, referenceArray: string[], index: number) => {
-        let child = sourceObject[referenceArray[index]]
-        if (index < referenceArray.length - 1) {
-           this.updateObjectFromArray(child, updatedElement, referenceArray, index + 1)
-        } else {
-            sourceObject[referenceArray[index]] = updatedElement
-        }
-    }
-
-    getObjectFromArray = (sourceObject: any, referenceArray: string[], index: number): any => {
-        let child = sourceObject[referenceArray[index]]
-        if (index < referenceArray.length - 1) {
-            return this.getObjectFromArray(child, referenceArray, index + 1)
-        } else {
-            return child
-        }
-    }
 }
 

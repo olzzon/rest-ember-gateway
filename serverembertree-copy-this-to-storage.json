@@ -1,0 +1,44 @@
+[
+    {
+        "nodeType": "Node",
+        "number": 1,
+        "path": "1",
+        "isOnline": true,
+        "identifier": "Olzzon",
+        "description": "",
+        "schemaIdentifiers": "",
+        "children": [
+            {
+                "nodeType": "Node",
+                "number": 1,
+                "path": "1.1",
+                "isOnline": true,
+                "identifier": "VSM",
+                "description": "",
+                "schemaIdentifiers": "",
+                "children": [
+                    {
+                        "nodeType": "Parameter",
+                        "number": 1,
+                        "path": "1.1.1",
+                        "identifier": "Level",
+                        "type": 2,
+                        "access": 3,
+                        "maximum": 100,
+                        "minimum": 0,
+                        "value": 0
+                    },
+                    {
+                        "nodeType": "Parameter",
+                        "number": 2,
+                        "path": "1.1.2",
+                        "identifier": "Name",
+                        "type": 3,
+                        "access": 3,
+                        "value": "MY NAME"
+                    }
+                ]
+            }
+        ]
+    }
+]
