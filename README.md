@@ -1,7 +1,28 @@
 # REST-EMBER GATEWAY
 Node based Emberprovider with REST API
 
-### Run:
+### Run as Docker: (On linux)
+```
+docker pull olzzon/tv2-rest-ember-gateway:develop
+docker volume create rest-ember-vol
+
+Run as Ember Client:
+sudo docker run --mount source=rest-ember-vol,target=/opt/rest-ember-gateway/storage -e emberIp="192.168.9.9" -e emberPort="9000" -e loggerIp='0.0.0.0' -e loggerPort=9300 -e loggerFileLevel='error' --network="host" --restart always olzzon/tv2-rest-ember-gateway:develop
+
+Run as Ember Server:
+sudo docker run --mount source=rest-ember-vol,target=/opt/rest-ember-gateway/storage -e fileName="vsm.json" -e emberPort="9000" -e loggerIp='0.0.0.0' -e loggerPort=9300 -e loggerFileLevel='error' --network="host" --restart always olzzon/tv2-rest-ember-gateway:develop
+
+```
+
+Running Docker with Elastic Search: 
+Set env vars: loggerIp=xx.xx.xx.xx and loggerPort=xxxx and loggerLevel='info' 
+
+if you wish to log to logfile instead of kibana:
+Set env var: -e loggerFileLevel='info'
+(no kibana args will default to: 0.0.0.0:9200 logger level='info')
+
+
+### Run as Node locally on computer:
 ```
 yarn
 yarn start --emberIp="192.168.9.9" --emperPort="9000"
