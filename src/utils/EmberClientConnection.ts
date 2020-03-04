@@ -7,6 +7,7 @@ const path = require('path')
 
 const emberIp = process.env.emberIp || processArgs.emberIp || "0.0.0.0"
 const emberPort = process.env.emberPort || processArgs.emberPort || "9000"
+const emberFile = process.env.emberFile || processArgs.emberFile || "embertree.json"
 
 export class EmberClientConnection {
     emberConnection: EmberClient
@@ -40,9 +41,10 @@ export class EmberClientConnection {
         .then((r: any) => {
             this.emberConnection.expand(r.elements[0])
             .then(() => {
-                this.dumpEmberTree(this.emberConnection.root)
                 this.convertRootToObject(this.emberConnection.root)
-                this.setupMixerConnection();
+                let timer = setInterval(() => {
+                    this.dumpEmberTree(this.emberConnection.root)
+                }, 2000 )
             })
         })
         .catch((e: any) => {
@@ -52,11 +54,12 @@ export class EmberClientConnection {
 
     dumpEmberTree(root: any) {
         let json = JSON.stringify(JSON.parse(JSON.stringify(root)).elements)
-        if (!fs.existsSync('storage')){
+        if (!fs.existsSync(path.resolve('storage', emberFile))){
             fs.mkdirSync('storage')
+            logger.error('Missing embertree.json file in storage folder')
         }
         logger.info('Writing EmberTree to file')
-        fs.writeFile(path.resolve('storage', 'clientembertree.json'), json, 'utf8', (error: Error)=>{
+        fs.writeFile(path.resolve('storage', emberFile), json, 'utf8', (error: Error)=>{
             if(error) {
                 console.log(error)
                 logger.error('Error writing Ember-dump file')
@@ -115,10 +118,6 @@ export class EmberClientConnection {
         } else {
             return child
         }
-    }
-  
-    setupMixerConnection() {
-        logger.info('Ember connection established - setting up subscription of channels')
     }
 }
 
