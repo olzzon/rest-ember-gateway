@@ -9,7 +9,7 @@ Run as Ember Client:
 sudo docker run --mount source=rest-ember-vol,target=/opt/rest-ember-gateway/storage -e emberIp="192.168.9.9" -e emberPort="9000" -e loggerIp='0.0.0.0' -e loggerPort=9300 -e loggerFileLevel='error' --network="host" --restart always olzzon/rest-ember-gateway:develop
 
 Run as Ember Server: (copy your treefile.json to /opt/rest-ember-gateway)
-sudo docker run -v /opt/rest-ember-gateway:/opt/rest-ember-gateway/storage -e fileName="vsm.json" -e emberPort="9000" -e loggerIp='0.0.0.0' -e loggerPort=9300 -e loggerFileLevel='error' --network="host" olzzon/rest-ember-gateway:develop
+sudo docker run -v /opt/rest-ember-gateway:/opt/rest-ember-gateway/storage -e emberFile="vsm.json" -e emberPort="9000" -e loggerIp='0.0.0.0' -e loggerPort=9300 -e loggerFileLevel='error' --network="host" olzzon/rest-ember-gateway:develop
 
 ```
 
