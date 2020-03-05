@@ -9,12 +9,27 @@ export class MainThreadHandlers {
 
     constructor() {
         logger.info('Setting up MainThreadHandlers', {})
-        // Start Ember Server
         if (!process.env.emberIp && !processArgs.emberIp) {
+            // Start Ember Server if no emberIp is added:
             global.emberServerConnection = new EmberServerConnection()
+            this.waitForServer()
+        } else {
+            // If an IP adress is parsed it starts as a Ember Client otherwise it starts as a local client:
+            global.emberClientConnection = new EmberClientConnection()
+            expressInit()
         }
-        // If an IP adress is parsed it starts as a Client
-        global.emberClientConnection = new EmberClientConnection()
-        expressInit()
+    }
+
+    waitForServer () {
+        if(!global.emberServerReady) {
+            console.log('waiting for Ember Server start');
+            let NextTimerRef = setTimeout(() => { 
+                this.waitForServer() 
+            }, 100)
+        } else {
+            console.log('Ember server started')
+            global.emberClientConnection = new EmberClientConnection()
+            expressInit()
+        }
     }
 }

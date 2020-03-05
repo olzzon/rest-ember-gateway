@@ -12,7 +12,10 @@ export const setMatrix = (req: any, res: any) => {
     */
     console.log('Query : ', req.query)
     if (typeof(req.query.path) !== 'undefined') {
-        global.emberClientConnection.client.matrixConnect(req.query.path, req.query.src, req.query.dest)
-        res.send('Matrix Connection changed')
-    } 
+        global.emberClientConnection.client.getElementByPath(req.query.path)
+        .then((node: any) => {
+            global.emberClientConnection.client.matrixConnect(node, req.query.dest, [req.query.src])
+            res.send('Matrix Connection changed')
+        })
+    }
 }

@@ -2,10 +2,8 @@
 
 const jsonRoot = require('./src/__tests__/createTestTree').jsonRoot
 const fs = require('fs')
-//@ts-ignore
-import { EmberServer } from 'node-emberplus'
 
-let convertedTree = JSON.stringify(EmberServer.JSONtoTree(jsonRoot()))
+let convertedTree = JSON.stringify(jsonRoot())
 console.log('Storing Ember Tree : ', convertedTree)
 fs.writeFileSync('storage/embertree.json', convertedTree)
 console.log('Tree Stored')

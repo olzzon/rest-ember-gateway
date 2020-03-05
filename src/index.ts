@@ -8,9 +8,10 @@ declare global {
           mainThreadHandler: MainThreadHandlers
           emberClientConnection: EmberClientConnection
           emberServerConnection: EmberServerConnection
+          emberServerReady: boolean
           emberClientStore: any
       }
   }
 }
-
+global.emberServerReady = false
 global.mainThreadHandler = new MainThreadHandlers()

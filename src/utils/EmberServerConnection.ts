@@ -43,9 +43,11 @@ export class EmberServerConnection {
 
         this.emberConnection.listen()
         .then(() => { 
+            global.emberServerReady = true
             console.log("Ember Server is listening"); 
         })
         .catch((error: Error) => { 
+            
             console.log(error.stack); 
         });
     }
