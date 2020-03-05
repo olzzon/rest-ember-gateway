@@ -33,9 +33,11 @@ The EmberTree from the server will be store in "storage/clientembertree.json"
 
 ### if no --emberIp argument are add in runtime:
 The program will run as an emberServer and the following file will be used as emberTree:
-#### --fileName="servertembertree.json"
-You need to copy serverembertree-copy-this-to-storage.json into the storage folder, unless you have created your own.
-
+#### --fileName="embertree.json"
+To create a test EmberTree run:
+```
+yarn ts-node createMocks.ts
+```
 
 ### Query:
 Get the full ember tree and state:
