@@ -90,7 +90,7 @@ export class EmberClientConnection {
 
     async setValue(path: string, value: any): Promise<any> {
         const element = await this.client.getElementByPath(path)
-        await this.client.setValue(element, value)
+        await this.client.setValueNoAck(element, value)
         await this.updatePath(path)
         return true
     }
