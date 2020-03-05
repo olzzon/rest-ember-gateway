@@ -40,11 +40,10 @@ export class EmberServerConnection {
             logger.error('Lost Ember connection')
 		})
         logger.info('Setting up Ember Server')
-        this.convertRootToObject(this.emberConnection.tree)
 
         this.emberConnection.listen()
         .then(() => { 
-            console.log("listening"); 
+            console.log("Ember Server is listening"); 
         })
         .catch((error: Error) => { 
             console.log(error.stack); 
@@ -65,27 +64,5 @@ export class EmberServerConnection {
         console.log('Ember Tree :', treeJson)
         return EmberServer.JSONtoTree(treeJson)
     }
-
-    convertRootToObject(root: any): any {
-        let rootObj = JSON.parse(JSON.stringify(root))
-        global.emberServerStore={}
-        global.emberServerStore[rootObj.elements[0].identifier] = this.convertChildToObject(rootObj.elements[0])
-        console.log('Device Object :', global.emberServerStore)
-        logger.info('Tree converted to object')
-    }
-
-    convertChildToObject(node: any): any {
-        if (node.children) {
-            let childNode: any = {}
-            node.children.forEach((item: any) => {
-                let temp = this.convertChildToObject(item)
-                childNode[item.identifier] = temp
-            })
-            return childNode
-        } else {
-            return node
-        }
-    }
-
 }
 

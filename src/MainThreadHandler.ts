@@ -1,4 +1,4 @@
-import { socketServer } from './expressHandler'
+import { expressInit } from './utils/expressHandler'
 import { EmberClientConnection } from './utils/EmberClientConnection'
 import { EmberServerConnection } from './utils/EmberServerConnection'
 const processArgs = require('minimist')(process.argv.slice(2))
@@ -17,11 +17,6 @@ export class MainThreadHandlers {
         }
         // If an IP adress is parsed it starts as a Client
         this.emberClientConnection = new EmberClientConnection()
-        /*
-        store.dispatch({
-            type:UPDATE_SETTINGS,
-            settings: loadState(state)
-        });
-        */
+        expressInit()
     }
 }
