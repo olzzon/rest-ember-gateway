@@ -1,6 +1,7 @@
 import { logger } from './logger'
 import { getState  } from '../APIHandlers/getState'
 import { setValue  } from '../APIHandlers/setValue'
+import { setMatrix } from '../APIHandlers/setMatrix'
 
 
 const express = require('express')
@@ -24,6 +25,9 @@ export const expressInit = () => {
         .post('/setvalue', (req: any, res: any) => {
             setValue(req, res)
         })
+        .post('/setmatrix', (req: any, res: any) => {
+          setMatrix(req, res)
+      })
     })
 
     socketServer.on('connection', ((socket: any) => {

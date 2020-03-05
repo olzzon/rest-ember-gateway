@@ -10,16 +10,16 @@ const emberPort = process.env.emberPort || processArgs.emberPort || "9000"
 const emberFile = process.env.emberFile || processArgs.emberFile || "embertree.json"
 
 export class EmberClientConnection {
-    emberConnection: EmberClient
+    client: EmberClient
 
     constructor() {
         logger.info("Setting up Ember Client Connection")
-        this.emberConnection = new EmberClient(
+        this.client = new EmberClient(
             emberIp,
             emberPort
         );
 
-        this.emberConnection.on('error', (error: any) => {
+        this.client.on('error', (error: any) => {
 			if (
 				(error.message + '').match(/econnrefused/i) ||
 				(error.message + '').match(/disconnected/i)
@@ -29,21 +29,21 @@ export class EmberClientConnection {
 				logger.error('Ember connection unknown error' + error.message)
 			}
         })
-        this.emberConnection.on('disconnected', () => {
+        this.client.on('disconnected', () => {
             logger.error('Lost Ember connection')
 		})
         logger.info('Connecting to Ember')
-        this.emberConnection.connect()
+        this.client.connect()
         .then(() => {
             console.log("Getting Directory")
-            return this.emberConnection.getDirectory();
+            return this.client.getDirectory();
         })
         .then((r: any) => {
-            this.emberConnection.expand(r.elements[0])
+            this.client.expand(r.elements[0])
             .then(() => {
-                this.convertRootToObject(this.emberConnection.root)
+                this.convertRootToObject(this.client.root)
                 let timer = setInterval(() => {
-                    this.dumpEmberTree(this.emberConnection.root)
+                    this.dumpEmberTree(this.client.root)
                 }, 2000 )
             })
         })
@@ -89,14 +89,14 @@ export class EmberClientConnection {
     }
 
     async setValue(path: string, value: any): Promise<any> {
-        const element = await this.emberConnection.getElementByPath(path)
-        await this.emberConnection.setValue(element, value)
+        const element = await this.client.getElementByPath(path)
+        await this.client.setValue(element, value)
         await this.updatePath(path)
         return true
     }
 
     async updatePath(path: string): Promise<any> {
-        const element = await this.emberConnection.getElementByPath(path)
+        const element = await this.client.getElementByPath(path)
         let pathArray = path.split('/')
         this.updateObjectFromArray(global.emberClientStore, element, pathArray, 0)
         return true
