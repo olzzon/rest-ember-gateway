@@ -95,8 +95,10 @@ export class EmberClientConnection {
 
     async updatePath(path: string): Promise<any> {
         const element = await this.client.getElementByPath(path)
-        //let pathArray = path.split('/')
-        //this.updateObjectFromArray(global.emberClientStore, element, pathArray, 0)
+        if (global.cachedClient) {
+            let pathArray = path.split('/')
+            this.updateObjectFromArray(global.emberClientStore, element, pathArray, 0)
+        }
         return element
     }
 
