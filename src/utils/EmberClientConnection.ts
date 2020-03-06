@@ -19,28 +19,30 @@ export class EmberClientConnection {
 				(error.message + '').match(/econnrefused/i) ||
 				(error.message + '').match(/disconnected/i)
 			) {
-				logger.error('Ember connection not establised')
+				logger.error('Ember client connection not establised')
 			} else {
-				logger.error('Ember connection unknown error' + error.message)
+				logger.error('Ember client connection unknown error' + error.message)
 			}
         })
         this.client.on('disconnected', () => {
             logger.error('Lost Ember connection')
 		})
-        logger.info('Connecting to Ember')
+        logger.info('Ember Client Connecting to Ember')
         this.client.connect()
         .then(() => {
-            logger.info("Getting Directory")
+            logger.info("Ember Client Getting Directory")
             return this.client.getDirectory();
         })
         .then((r: any) => {
             if (global.cachedClient) {
-                logger.info('Expanding Tree')
+                logger.info('Ember Client Expanding Tree')
                 this.client.expand(r.elements[0])
                 .then(() => {
                     this.convertRootToObject(this.client.root)
                     this.dumpEmberTree(this.client.root)
                 })
+            } else {
+                logger.info("Ember Client Ready")
             }
         })
         .catch((e: any) => {

@@ -20,7 +20,7 @@ export class EmberServerConnection {
 
         this.emberConnection
         .on('event', (event: any) => {
-            console.log('Event received : ', event)
+            console.log('Ember Server Event received : ', event)
         })
         .on('error', (error: any) => {
 			if (
@@ -32,9 +32,6 @@ export class EmberServerConnection {
 				logger.error('Ember connection unknown error' + error.message)
 			}
         })
-        .on('disconnected', () => {
-            logger.error('Lost Ember connection')
-		})
         logger.info('Setting up Ember Server')
 
         this.emberConnection.listen()

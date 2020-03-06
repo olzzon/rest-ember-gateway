@@ -11,7 +11,7 @@ const server = require('http').Server(app);
 const socketServer = require('socket.io')(server);
 
 export const expressInit = () => {
-    logger.info('Initialising WebServer')
+    logger.info('REST Initialising WebServer')
     app.use( '/' , express.static(path.join(__dirname ,'..')))
     server.listen(80)
     server.on('connection', () => {
@@ -31,7 +31,7 @@ export const expressInit = () => {
     })
 
     socketServer.on('connection', ((socket: any) => {
-        logger.info('Client connected :' + String(socket.client.id), {})
+        logger.info('REST Client connected :' + String(socket.client.id), {})
         // global.mainThreadHandler.socketServerHandlers(socket)
       })
     )
