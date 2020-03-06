@@ -1,13 +1,8 @@
 //@ts-ignore
 import { EmberClient } from 'node-emberplus'
 import { logger } from './logger'
-const processArgs = require('minimist')(process.argv.slice(2))
 const fs = require('fs')
 const path = require('path')
-
-const emberIp = process.env.emberIp || processArgs.emberIp || "0.0.0.0"
-const emberPort = process.env.emberPort || processArgs.emberPort || "9000"
-const emberFile = process.env.emberFile || processArgs.emberFile || "embertree.json"
 
 export class EmberClientConnection {
     client: EmberClient
@@ -15,8 +10,8 @@ export class EmberClientConnection {
     constructor() {
         logger.info("Setting up Ember Client Connection")
         this.client = new EmberClient(
-            emberIp,
-            emberPort
+            global.emberIp,
+            global.emberPort
         );
 
         this.client.on('error', (error: any) => {
@@ -54,12 +49,12 @@ export class EmberClientConnection {
 
     dumpEmberTree(root: any) {
         let json = JSON.stringify(JSON.parse(JSON.stringify(root)).elements)
-        if (!fs.existsSync(path.resolve('storage', emberFile))){
+        if (!fs.existsSync(path.resolve('storage', global.emberFile))){
             fs.mkdirSync('storage')
             logger.error('Missing embertree.json file in storage folder')
         }
         logger.info('Writing EmberTree to file')
-        fs.writeFile(path.resolve('storage', emberFile), json, 'utf8', (error: Error)=>{
+        fs.writeFile(path.resolve('storage', global.emberFile), json, 'utf8', (error: Error)=>{
             if(error) {
                 console.log(error)
                 logger.error('Error writing Ember-dump file')

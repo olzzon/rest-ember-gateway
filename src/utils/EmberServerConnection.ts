@@ -3,12 +3,8 @@ import { EmberServer } from 'node-emberplus'
 const {ParameterType, FunctionArgument} = require("node-emberplus").EmberLib
 
 import { logger } from './logger'
-const processArgs = require('minimist')(process.argv.slice(2))
 const fs = require('fs')
 const path = require('path')
-
-const emberPort = process.env.emberPort || processArgs.emberPort || "9000"
-const emberFile = process.env.emberFile || processArgs.emberFile || "embertree.json"
 
 export class EmberServerConnection {
     emberConnection: EmberServer
@@ -18,7 +14,7 @@ export class EmberServerConnection {
         let root = this.createEmberTree()
         this.emberConnection = new EmberServer(
             '0.0.0.0',
-            emberPort,
+            global.emberPort,
             root
         );
 
@@ -53,11 +49,11 @@ export class EmberServerConnection {
     }
 
     createEmberTree() {
-        if (!fs.existsSync(path.resolve('storage', emberFile))){
-            logger.error('Missing ' + emberFile + ' file in storage folder')
+        if (!fs.existsSync(path.resolve('storage', global.emberFile))){
+            logger.error('Missing ' + global.emberFile + ' file in storage folder')
         }
         logger.info('Reading EmberTree form file')
-        let treeJson = JSON.parse(fs.readFileSync(path.resolve('storage', emberFile), (error: Error)=>{
+        let treeJson = JSON.parse(fs.readFileSync(path.resolve('storage', global.emberFile), (error: Error)=>{
             if (error) {
                 console.log(error)
                 logger.error('Error reading Ember file')
