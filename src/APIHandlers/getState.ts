@@ -1,7 +1,7 @@
 export const getState = (req: any, res: any) => {
     console.log('Query : ', req.query)
         if (typeof(req.query.full)!=='undefined') {
-            if (global.emberDump) {
+            if (global.cachedClient) {
                 res.json(global.emberClientStore)
             } else {
                 res.send('a full request is only available in cached mode')

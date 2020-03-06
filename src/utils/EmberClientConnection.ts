@@ -34,7 +34,7 @@ export class EmberClientConnection {
             return this.client.getDirectory();
         })
         .then((r: any) => {
-            if (global.emberDump) {
+            if (global.cachedClient) {
                 logger.info('Expanding Tree')
                 this.client.expand(r.elements[0])
                 .then(() => {
