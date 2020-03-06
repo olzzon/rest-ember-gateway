@@ -26,7 +26,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "minimist": "^1.2.0",
-    "node-emberplus": "https://github.com/dufourgilles/node-emberplus.git#2.5.8",
+    "node-emberplus": "https://github.com/olzzon/node-emberplus.git#master",
     "node-license-validator": "^1.3.0",
     "redux": "^4.0.5",
     "socket.io": "^2.3.0",
