@@ -1,13 +1,15 @@
 export const getState = (req: any, res: any) => {
     console.log('Query : ', req.query)
         if (typeof(req.query.full)!=='undefined') {
-            res.json(global.emberClientStore)
+            if (global.emberDump) {
+                res.json(global.emberClientStore)
+            } else {
+                res.send('a full request is only available in cached mode')
+            }
         } else if (typeof(req.query.path) !== 'undefined') {
             global.emberClientConnection.updatePath(req.query.path)
-            .then(()=>{
-            let pathArray = req.query.path.split('/')
-            let test = global.emberClientConnection.getObjectFromArray(global.emberClientStore, pathArray, 0)
-            res.json(test)
+            .then((node: any)=>{
+                res.json(node)
             })
         }
 }

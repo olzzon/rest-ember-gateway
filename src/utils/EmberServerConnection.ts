@@ -43,9 +43,11 @@ export class EmberServerConnection {
             console.log("Ember Server is listening"); 
         })
         .catch((error: Error) => { 
-            
             console.log(error.stack); 
-        });
+        })
+        let timer = setInterval(() => {
+            this.emberStateToFile()
+        }, 2000 )
     }
 
     createEmberTree() {
@@ -61,6 +63,17 @@ export class EmberServerConnection {
         }))
         console.log('Ember Tree :', treeJson)
         return EmberServer.JSONtoTree(treeJson)
+    }
+
+    emberStateToFile() {
+        let json = JSON.stringify(this.emberConnection.toJSON())
+        logger.info('Updating emberstate in file')
+        fs.writeFile(path.resolve('storage', global.emberFile), json, 'utf8', (error: Error)=>{
+            if(error) {
+                console.log(error)
+                logger.error('Error writing Ember-dump file')
+            }
+        })
     }
 }
 

@@ -14,6 +14,7 @@ declare global {
           emberIp: string
           emberPort: string | number
           emberFile: string
+          cachedClient: any | undefined
       }
   }
 }
@@ -21,6 +22,7 @@ declare global {
 global.emberIp = process.env.emberIp || processArgs.emberIp || "0.0.0.0"
 global.emberPort = process.env.emberPort || processArgs.emberPort || "9000"
 global.emberFile = process.env.emberFile || processArgs.emberFile || "embertree.json"
+global.cachedClient = process.env.emberDump || processArgs.emberDump || undefined
 
 
 global.emberServerReady = false

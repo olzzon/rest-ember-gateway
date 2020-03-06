@@ -30,20 +30,21 @@ export class EmberClientConnection {
         logger.info('Connecting to Ember')
         this.client.connect()
         .then(() => {
-            console.log("Getting Directory")
+            logger.info("Getting Directory")
             return this.client.getDirectory();
         })
         .then((r: any) => {
-            this.client.expand(r.elements[0])
-            .then(() => {
-                this.convertRootToObject(this.client.root)
-                let timer = setInterval(() => {
+            if (global.emberDump) {
+                logger.info('Expanding Tree')
+                this.client.expand(r.elements[0])
+                .then(() => {
+                    this.convertRootToObject(this.client.root)
                     this.dumpEmberTree(this.client.root)
-                }, 2000 )
-            })
+                })
+            }
         })
         .catch((e: any) => {
-            console.log(e.stack);
+            logger.error(e.stack);
         });
     }
 
@@ -92,9 +93,9 @@ export class EmberClientConnection {
 
     async updatePath(path: string): Promise<any> {
         const element = await this.client.getElementByPath(path)
-        let pathArray = path.split('/')
-        this.updateObjectFromArray(global.emberClientStore, element, pathArray, 0)
-        return true
+        //let pathArray = path.split('/')
+        //this.updateObjectFromArray(global.emberClientStore, element, pathArray, 0)
+        return element
     }
 
     updateObjectFromArray = (sourceObject: any, updatedElement: any, referenceArray: string[], index: number) => {

@@ -27,13 +27,26 @@ yarn
 yarn start --emberIp="192.168.9.9" --emperPort="9000"
 ```
 ## Arguments:
-### --emberIP="192.168.2.2"
-If added the program will run as client on another machines Ember Server
-The EmberTree from the server will be store in "storage/clientembertree.json"
+Client mode:
+``` 
+--emberIP="192.168.2.2"
+```
+If ip address are added the program will run as client on another machines Ember Server
+
+### Running client in cached mode:
+The full embertree and storage of this is available if you run with this argument:
+```
+--cachedClient
+```
+the EmberTree from the equipment will be store in "storage/embertree.json"
 
 ### if no --emberIp argument are add in runtime:
-The program will run as an emberServer and the following file will be used as emberTree:
-#### --fileName="embertree.json"
+The program will run as an emberServer and this argument will define the emberTree file:
+```
+--fileName="your-ember-tree.json"
+```
+if no fileName are added it will search for storage/embertree.json
+
 To create a test EmberTree run:
 ```
 yarn ts-node createMocks.ts
@@ -41,16 +54,20 @@ yarn ts-node createMocks.ts
 
 ### Query:
 Get the full ember tree and state:
+(This is only avilable in --cachedClient mode)
 ```
 /state GET full
 ```
-Get a parameter:
+#### Get a parameter:
 ```
 /state GET path="R3LAYVRX4/Ex/GUI/FaderSlot_1/FaderPosition"
 ``` 
 
-Set a value:
+#### Set a value:
 ```
 /setvalue POST path="R3LAYVRX4/Ex/GUI/FaderSlot_1/FaderPosition" value=12
 ```
-
+#### Set a matrix connection:
+````
+/setmatrix POST path="0.1.0" src=2 dest=1
+```
