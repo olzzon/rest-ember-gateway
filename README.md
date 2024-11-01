@@ -1,3 +1,5 @@
+## Looking for sponsors for this project
+
 # REST-EMBER GATEWAY
 Node based Emberprovider with REST API
 
